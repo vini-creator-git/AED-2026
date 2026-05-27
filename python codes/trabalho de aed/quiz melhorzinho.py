@@ -246,7 +246,7 @@ while começo == "Sim"or "sim":
     elif ponto>50:
         print("PARABENS VOCE ACERTOU MAIS DA METADE DO QUIZ GANHE UM BONUS")
         ponto+=20
-    print(f"Voce ficom com {ponto} pontos Parabens {pessoa}")
+    print(f"Voce ficou com {ponto} pontos Parabens {pessoa}")
     começo = input("Deseja recomeçar? ") 
     if começo=='nao' or começo=='NAO' or começo=='n':
         break
