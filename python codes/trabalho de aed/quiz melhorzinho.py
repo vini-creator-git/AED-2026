@@ -252,4 +252,4 @@ while começo == "Sim"or "sim":
         break
     if ponto > maior_pontuação:
         maior_pontuação = ponto
-    print(f"Sua maior pontuação foi {maior_pontuação}")
+print(f"Sua maior pontuação foi {maior_pontuação}")
