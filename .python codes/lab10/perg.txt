@@ -1,0 +1,3 @@
+Você vai criar um sistema que registra os resultados dos jogos do Atlético MG ao longo de um campeonato. Seu sistema vai receber os resultados de todos os jogos do Galo, e deve calcular a pontuação do time sabendo que vitórias valem 3 pontos, empates 1 ponto e derrotas 0 pontos.
+A primeira linha de entrada é um inteiro N com a quantidade jogos do galo. Para cada jogo você deve ler 2 inteiros, o primeiro com a quantidade de gols do galo e o segundo com a quantidade de gols do time oponente. 
+Apresente a soma de vitórias, empates e derrotas do galo, junto com o cálculo da pontuação total.
