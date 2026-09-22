@@ -1,4 +1,4 @@
-from funcao import buscamaior 
+import funcao
 
 
 vet=[0,0,0,0,0,0,0,0,0,0]
