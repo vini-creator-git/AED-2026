@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+.DS_Store?
+**/.DS_Store
+._*
+
+# VS Code
+.vscode/
+
+# Python cache/bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
