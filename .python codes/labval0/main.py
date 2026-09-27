@@ -1,4 +1,11 @@
-import funcoes
+from funcoes import (
+	area_circulo,
+	celsius_para_fahrenheit,
+	fatorial,
+	fahrenheit_para_celsius,
+	media_notas,
+	reajuste_salarial,
+)
 num = int(input("Digite um número para calcular o fatorial: ")) 
 print(f"O fatorial de {num} é {fatorial(num)}") 
 print("-" * 40)  
