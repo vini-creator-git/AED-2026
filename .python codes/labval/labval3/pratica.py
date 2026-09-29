@@ -11,7 +11,7 @@ def mediaal(aluno,nota):
     if nota >= 7.0:
         return print(f"O aluno {aluno} esta na media ou acima")
     else:
-        return print(f"O aluno {aluno} esta abaixo da media")
+        return print(f"O aluno {aluno} esta abaixo da media") 
 
 
 def separar_notas_por_posicao(notas):
@@ -71,6 +71,5 @@ def conceito(notas):
         else:
             conceitos.append("d")
     return conceitos
-
 
 
