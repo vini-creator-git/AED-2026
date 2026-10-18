@@ -2,6 +2,9 @@ from random import choice
 
 bases = {"A": "T", "T": "A", "C": "G", "G": "C"}
 rnab = {"A": "U", "T": "A", "C": "G", "G": "C"}
+parr = {"T": "A", "A": "T", "G": "C", "C": "G"}
+
+quantw=(37)
 cores = {
     "A": "\033[31mA\033[0m",
     "T": "\033[35mT\033[0m",
@@ -56,3 +59,18 @@ if resposta == "s":
         else:
             ponte = "\u2261"
         print(f"| {cores[base]} {cores[ponte]} {cores[rna]} |")
+
+
+
+see_W = input("Ver wolbachia? S/N").lower()
+if see_W == "s":
+    wolbachia =["T", "T", "C", "T", "T", "T", "A", "A", "A", "A", "G", "T", "C", "G", "G", "C", "A", "A", "A", "T", "A", "T", "T", "T", "G", "C", "A", "T", "T", "G", "T", "G", "T", "A", "A", "T", "T"]
+
+    print("Fita do Wolbachia:")
+    for base in wolbachia:
+        parw = parr[base]
+        if base in ["A", "T"]:
+            ponte = "="
+        else:
+            ponte = "\u2261"
+        print(f"| {cores[base]} {cores[ponte]} {cores[parw]} |")
