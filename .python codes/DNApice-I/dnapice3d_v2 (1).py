@@ -166,6 +166,7 @@ class Fundo:
 class Sim:
     def __init__(s, n, demo=False, seq=None):
         s.n, s.demo, s.seq = n, demo, seq
+        s.nome = None
         s.d2 = n / NT_S
         s.total = T0 + T1 + s.d2 + T3
         s.yaw, s.pitch = 0.35, 0.25
@@ -465,7 +466,7 @@ def painel_fitas(sim):
 
 def hud(sim, btns, mouse):
     nome, desc = ETAPAS[sim.stage]
-    texto("DNApice 3D" + ("  ·  Wolbachia" if sim.seq else ""), 20, 12, FONTE_G, (255, 255, 255))
+    texto("DNApice 3D" + (f"  ·  {sim.nome}" if sim.nome else ""), 20, 12, FONTE_G, (255, 255, 255))
     texto(nome, 20, 46, FONTE_G, (255, 220, 120))
     quebra(desc, 520, 20, 80)
     if sim.stage >= 2:
@@ -494,7 +495,7 @@ def hud(sim, btns, mouse):
 def main():
     fundo = Fundo()
     demo = Sim(30, demo=True)
-    sim, modo, qtxt, fonte = None, "menu", "24", "aleatoria"
+    sim, modo, qtxt, fonte, stxt = None, "menu", "24", "aleatoria", ""
     x = 20
     btns = {}
     for k, w, lab, ic in (("ini", 70, "Início", None), ("rew", 52, None, "rew"), ("back", 52, None, "back"),
@@ -504,8 +505,9 @@ def main():
         x += w + 8
     mb = {"minus": Btn((W // 2 - 190, 285, 50, 50), "-"), "plus": Btn((W // 2 + 140, 285, 50, 50), "+"),
           "ini": Btn((W // 2 - 170, 425, 340, 56), "Iniciar simulação"), "sair": Btn((W // 2 - 170, 492, 340, 44), "Sair"),
-          "tab_a": Btn((W // 2 - 250, 178, 245, 42), "Ver geração aleatória"),
-          "tab_w": Btn((W // 2 + 5, 178, 245, 42), "Ver Wolbachia")}
+          "tab_a": Btn((W // 2 - 270, 178, 175, 42), "Aleatória"),
+          "tab_d": Btn((W // 2 - 88, 178, 175, 42), "Sequência própria"),
+          "tab_w": Btn((W // 2 + 94, 178, 175, 42), "Wolbachia")}
     for i, v in enumerate((12, 24, 48, 96)):
         mb[v] = Btn((W // 2 - 170 + i * 88, 355, 78, 38), str(v))
     arrasta, rew_hold, scrub = None, False, False
@@ -514,6 +516,12 @@ def main():
         nonlocal sim, modo
         if fonte == "wolbachia":
             sim = Sim(len(WOLBACHIA), seq=WOLBACHIA)
+            sim.nome = "Wolbachia"
+        elif fonte == "digitada":
+            if not stxt:
+                return
+            sim = Sim(len(stxt), seq=stxt)
+            sim.nome = "Sequência própria"
         else:
             sim = Sim(max(4, min(int(qtxt or 24), 150)))
         modo = "sim"
@@ -537,9 +545,14 @@ def main():
                     elif e.key == pygame.K_RETURN:
                         iniciar()
                     elif e.key == pygame.K_TAB:
-                        fonte = "wolbachia" if fonte == "aleatoria" else "aleatoria"
+                        ordem = ["aleatoria", "digitada", "wolbachia"]
+                        fonte = ordem[(ordem.index(fonte) + 1) % 3]
                     elif e.key == pygame.K_BACKSPACE and fonte == "aleatoria":
                         qtxt = qtxt[:-1]
+                    elif e.key == pygame.K_BACKSPACE and fonte == "digitada":
+                        stxt = stxt[:-1]
+                    elif fonte == "digitada" and e.unicode.upper() in ("A", "T", "C", "G") and len(stxt) < 150:
+                        stxt += e.unicode.upper()
                     elif e.unicode.isdigit() and len(qtxt) < 3 and fonte == "aleatoria":
                         qtxt += e.unicode
                 elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
@@ -551,6 +564,8 @@ def main():
                         sys.exit()
                     elif mb["tab_a"].r.collidepoint(e.pos):
                         fonte = "aleatoria"
+                    elif mb["tab_d"].r.collidepoint(e.pos):
+                        fonte = "digitada"
                     elif mb["tab_w"].r.collidepoint(e.pos):
                         fonte = "wolbachia"
                     elif fonte == "aleatoria" and mb["minus"].r.collidepoint(e.pos):
@@ -650,6 +665,7 @@ def main():
             screen.blit(b, (x0 + a.get_width(), 28))
             texto("Simulador de transcrição: DNA → RNA", W // 2, 112, FONTE_M, (200, 210, 255), True)
             mb["tab_a"].draw(mouse, on=(fonte == "aleatoria"))
+            mb["tab_d"].draw(mouse, on=(fonte == "digitada"))
             mb["tab_w"].draw(mouse, on=(fonte == "wolbachia"))
             if fonte == "aleatoria":
                 texto("Quantidade de bases nitrogenadas", W // 2, 240, FONTE_M, (255, 255, 255), True)
@@ -661,6 +677,30 @@ def main():
                 screen.blit(cur, cur.get_rect(center=box.center))
                 for k in ("minus", "plus", 12, 24, 48, 96):
                     mb[k].draw(mouse)
+            elif fonte == "digitada":
+                texto("Digite a sequência de bases (somente A, T, C, G)", W // 2, 240, FONTE_M, (255, 255, 255), True)
+                texto("ex.: AATTCCGG  |  até 150 bases  |  Backspace apaga", W // 2, 262, FONTE_P, (160, 170, 210), True)
+                box = pygame.Rect(W // 2 - 250, 285, 500, 50)
+                pygame.draw.rect(screen, (20, 26, 60), box, border_radius=10)
+                pygame.draw.rect(screen, (120, 220, 255), box, 2, border_radius=10)
+                vis, xx = stxt[-21:], box.x + 14
+                if len(stxt) > 21:
+                    texto("…", xx, box.y + 8, FONTE_G)
+                    xx += 24
+                for ch in vis:
+                    screen.blit(letra(ch, 24, COR[ch]), (xx, box.y + 10))
+                    xx += 20
+                if int(demo.clock * 2) % 2 == 0:
+                    pygame.draw.line(screen, (255, 255, 255), (xx + 2, box.y + 10), (xx + 2, box.y + 40), 2)
+                texto(f"{len(stxt)} bases", W // 2, 342, FONTE_P, (190, 255, 220), True)
+                if stxt:
+                    texto("RNA:", box.x, 368, FONTE_M, (225, 200, 255))
+                    xx = box.x + 50 + (24 if len(stxt) > 21 else 0)
+                    for ch in vis:
+                        screen.blit(letra(rnab[ch], 22, COR[rnab[ch]]), (xx, 364))
+                        xx += 20
+                else:
+                    texto("digite ao menos uma base para iniciar", W // 2, 398, FONTE_P, (255, 140, 140), True)
             else:
                 texto("Wolbachia - sequência predefinida", W // 2, 240, FONTE_M, (255, 255, 255), True)
                 texto(f"{len(WOLBACHIA)} bases (fita molde); o RNA é transcrito a partir dela", W // 2, 262, FONTE_P, (160, 170, 210), True)
