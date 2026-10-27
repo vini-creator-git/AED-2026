@@ -64,7 +64,7 @@ if resposta == "s":
             ponte = "="
         else:
             ponte = "\u2261"
-        print(f"| {cores[base]} {cores[ponte]} {cores[rna]} |")
+        print(f"|  {cores[rna]} |")
     porcent(fita_rna)
 
 
@@ -99,7 +99,7 @@ if see_W == "s":
                 ponte = "="
             else:
                 ponte = "\u2261"
-            print(f"| {cores[base]} {cores[ponte]} {cores[rna]} |")
+            print(f"|  {cores[rna]} |")
             if modo_lotes_w == "s" and (i + 1) % 10 == 0 and i + 1 < len(wolbachia):
                 input("Pressione Enter para ver as próximas bases...")
         print("Sequência de RNA:", fita_rnaw)
