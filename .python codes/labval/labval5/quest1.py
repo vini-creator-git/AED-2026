@@ -5,4 +5,3 @@ with open ("exemplo.txt", "w", encoding = "UTF-8") as arquivo:
 print("arquivo criado com sucesso")
 
 
-
