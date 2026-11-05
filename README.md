@@ -36,6 +36,11 @@ Exemplo:
 python3 "/home/runner/work/AED-2026/AED-2026/atividade alp/main.py"
 ```
 
+## Materiais de estudo e projeto
+
+- [Lista de exercícios de Python](lista_exercicios_python.md)
+- [Proposta do projeto BioLab AED](proposta_projeto_python.md)
+
 ## Observações
 
 - Não foi identificado, nesta estrutura, um único ponto de entrada para todo o projeto; o uso é por arquivo/atividade.
